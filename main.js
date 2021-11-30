@@ -1,40 +1,36 @@
+const electron = require('electron');
+const url = require('url');
 const path = require('path');
 
-// Если не будет устанавливаться electron
-// Необходимо понизить версию npm до 6
-// Команда для понижения версии npm : npm install -g npm@6
+const UserCheck = require('./Auth/auth');
 
-// Для запуска приложения используйте команду : npm start
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
-const { app, BrowserWindow, electronSend } = require('electron');
 
-function createWindow () {
-    const win = new BrowserWindow({
-      width: 800,
-      height: 600,
-      webPreferences: {
-        preload: path.join(__dirname, 'preload.js')
-      }
+let AuthWindow;
+
+ipcMain.on('login-user-event', (e, user) => {
+    if (UserCheck({username: user.username, password: user.password})) {
+    //...   
+    } else {
+        AuthWindow.webContents.send('not-correct-user', user);
+    }
+});
+
+app.on('ready', () => {
+    AuthWindow = new BrowserWindow({});
+
+    AuthWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'windows/AuthWindow/index.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    AuthWindow.on('closed', () => {
+        app.quit();
     });
-  
-    win.loadFile(path.join(__dirname, 'windows/authWindow/index.html'));
-    win.webContents.openDevTools();
-}
 
-const Main = async () => {
-  await app.whenReady();
-  createWindow();
-}
 
-app.on('window-all-closed', () => {
-  app.quit()
 })
-const {ipcMain} = require('electron')
-
-ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log( arg );
-  
-  // send message to index.html
-  event.sender.send('asynchronous-reply', 'hello' );
-  });
-Main()

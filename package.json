@@ -1,17 +1,15 @@
 {
   "name": "coursework",
   "version": "1.0.0",
+  "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^16.0.2",
-    "phantomjs": "^2.1.7"
-  },
-  "devDependencies": {},
-  "description": ""
+    "electron": "^1.7.6",
+    "pg": "^8.7.1"
+  }
 }

@@ -1,0 +1,14 @@
+form{
+    padding-top: 5%;
+}
+form label{
+    text-align: center;
+    font-size: large;
+    color: black;
+    padding-left: 45%;
+}
+.logo-form-button{
+    text-align: center;
+    font-size: large;
+    margin-left: 46%;
+}
