@@ -1,0 +1,20 @@
+ul {
+    list-style: none; 
+}
+
+ul li div {
+    float: left;
+    padding-right: 6%;
+    font-size: 18px;
+    border-left: black 3px solid;
+    border-top: black 3px solid;
+    border-bottom: black 3px solid;
+}
+
+#last-li-div {
+    border-right: black 3px solid;
+}
+
+#first-li-div {
+    margin-left: 2%;
+}

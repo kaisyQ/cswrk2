@@ -1,6 +1,6 @@
 const postgres = require('pg');
 
-const CheckUserInDatabase = async (user) => {
+const GetAllUsersFromDatabase = async () => {
     const client = new postgres.Client(require('./config'));
     
     try {
@@ -12,18 +12,12 @@ const CheckUserInDatabase = async (user) => {
     const con = await client.query('select * from users');
 
     if (con) {
-        for (let i = 0; i < con.rows.length; ++i) {
-            if (con.rows[i].email === user.username && con.rows[i].psswrd == user.password) {
-                await client.end();
-                return true;
-            }
-        }
         await client.end();
-        return false;
+        return con.rows;
     } else {
         console.error('Query error !');
     }
 }; 
 
+module.exports = GetAllUsersFromDatabase;
 
-module.exports = CheckUserInDatabase;

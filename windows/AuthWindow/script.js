@@ -29,3 +29,5 @@ document.getElementById('submit-button').addEventListener('click', (e) => {
         document.querySelector('#password').value = null;
     });
 });
+
+
