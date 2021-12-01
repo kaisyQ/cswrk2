@@ -1,20 +1,23 @@
 ul {
+    width: 800px;
     list-style: none; 
 }
 
 ul li div {
+    overflow: hidden;
+    width: 16%;
     float: left;
-    padding-right: 6%;
     font-size: 18px;
     border-left: black 3px solid;
     border-top: black 3px solid;
     border-bottom: black 3px solid;
 }
 
-#last-li-div {
+.last-li-div {
+    width: 13%;
     border-right: black 3px solid;
 }
 
-#first-li-div {
+.first-li-div {
     margin-left: 2%;
 }

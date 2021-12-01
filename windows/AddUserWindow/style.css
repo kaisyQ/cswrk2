@@ -1,0 +1,22 @@
+form div {
+    margin-left: 6%;
+    width: 400px;
+}
+
+div label, div input {
+    font-size: 20px;
+}
+
+div label {
+    color: black;
+}
+
+
+.footer {
+    margin-top: 8%;
+}
+
+.footer button {
+    font-size: 20px;
+    margin-left: 23%;
+}
