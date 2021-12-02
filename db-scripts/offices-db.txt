@@ -1,0 +1,7 @@
+insert into Offices(country_id, title, phone, contact) values 
+	(52, 'Cairo', '252-224-8525', 'David Johns'),
+	(13, 'Bahrain', '542-227-5825', 'Katie Ballmer'),
+	(142, 'Doha', '758-278-9597', 'Ariel Levy'),
+	(152, 'Riyadh', '285-285-1474', 'Andrew Hobart');
+
+select * from Offices;

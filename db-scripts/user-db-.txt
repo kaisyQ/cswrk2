@@ -1,0 +1,4 @@
+insert into users (office_id, role_id, email, psswrd, firstname, lastname, birthdate, active) values 
+	(2, 1, 'j.doe@amonic.com', '123', 'John', 'Doe', '1983-01-13', '04:05:06'),
+	(2, 2, 'k.omar@amonic.com', '4258', 'Karim', 'Omar', '1980-03-19', '04:05:06'),
+	(2, 2, 'h.saeed@amonic.com', '2020', 'Hannan', 'Saeed', '1989-12-20', '04:05:06');
