@@ -17,6 +17,7 @@ let AuthWindow;
 let DefaultUserWindow;
 let AdminWindow;
 let AddUserWindow;
+let ChangeRoleWindow;
 
 const DefaultUserMenuTemplate = [
     {
@@ -62,8 +63,8 @@ ipcMain.on('login-user-event', async (e, user) => {
 
     if (usercheck) {
         const userinfo = await TakeUserInfo(user.username);
-
-        if (userinfo.role_ === require('./Auth/roles').Admin) {
+        
+        if (await require('./Auth/getUserRole')(user.username) === require('./Auth/roles').Admin) {
             if (!AdminWindow) {
                 AdminWindow = new BrowserWindow({});
                 const adminMenu = Menu.buildFromTemplate(AdminMenuTemplate);
@@ -111,6 +112,27 @@ ipcMain.on ('creating-new-user-event', async (e, user) => {
     } else {
         AddUser(user)
     }
+
+});
+
+ipcMain.on('admin-changerole-event', (e, data) => {
+    if(!ChangeRoleWindow) {
+        ChangeRoleWindow = new BrowserWindow({width: 500, height: 700});
+        ChangeRoleWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'windows/ChangeRoleWindow/index.html'),
+            protocol: 'file:',
+            slashes: true
+        }));
+        ChangeRoleWindow.setMenuBarVisibility(false);
+    }
+});
+
+ipcMain.on('cancel-changerole-event', (e, data) => {
+    ChangeRoleWindow.close();
+    ChangeRoleWindow = null;
+});
+
+ipcMain.on('user-update-event', (e, user) => {
 
 });
   

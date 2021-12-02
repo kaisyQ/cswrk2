@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="./styte.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Edit Role</title>
 </head>
 <body>
@@ -26,7 +26,18 @@
             <label>Office</label>
             <input type="text">
         </div>
+        <div>
+            <input type="radio" name="role" value="user" id="user_radio" style="position:inherit; opacity: 1; pointer-events: initial;">
+            <label for="user_radio" style="vertical-align: text-top;">User</label>
+
+            <input type="radio" name="role" value="admin" id="admin_radio" style="position:inherit; opacity: 1; pointer-events: initial;">
+            <label for="admin_radio" style="vertical-align: text-top;">Admin</label>
+        </div>
     </form>
+    <div class="footer">
+        <button id="footer-apply-button">Apply</button>
+        <button id="footer-cancel-button">Cancel</button>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="./script.js"></script>
 </body>

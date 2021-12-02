@@ -8,7 +8,7 @@ const AddUserToDatabase = async (user) => {
     } catch (err) {
         console.error(err);
     }
-
+    const getOfficeId = await client.query(`select * from Offices where office_title = '${user.office}'';`);
     await client.query(
         `insert into users(role_, email, firstname, lastname, psswrd) values
             ('User', '${user.email}', '${user.firstname}', '${user.lastname}', '${user.password}');`);
