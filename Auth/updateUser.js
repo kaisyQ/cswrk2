@@ -8,7 +8,7 @@ const updateUser = async (user) => {
         console.error(err);
     }
 
-    client.q
+    const updatingUser = await client.query(``);
 }
 
 module.exports = updateUser;

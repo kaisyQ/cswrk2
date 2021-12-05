@@ -8,7 +8,7 @@ document.getElementById('submit-button').addEventListener('click', (e) => {
 
     if(username && password) {
         ipcRenderer.send('login-user-event', {
-            username: username,
+            email: username,
             password: password
         });
     } else {

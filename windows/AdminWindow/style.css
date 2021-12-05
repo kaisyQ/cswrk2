@@ -8,14 +8,14 @@ ul li div {
     width: 16%;
     float: left;
     font-size: 18px;
-    border-left: black 3px solid;
-    border-top: black 3px solid;
-    border-bottom: black 3px solid;
+    border-left: black 1px solid;
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
 }
 
 .last-li-div {
     width: 13%;
-    border-right: black 3px solid;
+    border-right: black 1px solid;
 }
 
 .first-li-div {

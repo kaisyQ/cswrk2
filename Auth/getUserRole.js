@@ -1,6 +1,6 @@
 const postgres = require('pg');
 
-const getUserRole = async (username) => {
+const getUserRole = async (email) => {
     const client = new postgres.Client(require('./config'));
     try {
         await client.connect();
@@ -10,7 +10,7 @@ const getUserRole = async (username) => {
 
     const role = await client.query(`select (role_title) from Roles
                                     join users on users.role_id = Roles.id
-                                    where email = '${username}';`);
+                                    where email = '${email}';`);
     client.end();
     return role.rows[0].role_title;
 };

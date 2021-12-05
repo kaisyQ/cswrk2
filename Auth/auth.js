@@ -13,7 +13,7 @@ const CheckUserInDatabase = async (user) => {
 
     if (con) {
         for (let i = 0; i < con.rows.length; ++i) {
-            if (con.rows[i].email === user.username && con.rows[i].psswrd == user.password) {
+            if (con.rows[i].email === user.email && con.rows[i].psswrd == user.password) {
                 await client.end();
                 return true;
             }
