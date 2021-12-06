@@ -136,6 +136,10 @@ ipcMain.on('admin-changerole-event', (e, data) => {
             slashes: true
         }));
         ChangeRoleWindow.setMenuBarVisibility(false);
+
+        ChangeRoleWindow.on('closed', () => {
+            ChangeRoleWindow = null;
+        });
     }
 });
 
@@ -144,10 +148,25 @@ ipcMain.on('cancel-changerole-event', (e, data) => {
     ChangeRoleWindow = null;
 });
 
-ipcMain.on('user-update-event', (e, user) => {
+ipcMain.on('user-update-event', async (e, data) => {
+    const usercheck = await TakeUserInfo(data.user[0]);
+    if(usercheck) {
+        if(require('./Auth/getUserRole')(data.user[0]) === require('./Auth/roles').Admin) {
+            ChangeRoleWindow.webContents.send('AdminRole-update');
+        } else {
+            const updateUser = await require('./Auth/updateUser')(data.user[0]);
+            if (updateUser) {
+                ChangeRoleWindow.webContents.send('user-successfully-updated');
+            } else {
+                ChangeRoleWindow.webContents.send('bad-update');
+            }
+        }
 
+    } else {
+        ChangeRoleWindow.webContents.send('user-not-found');
+    }
 });
-  
+
 app.on('ready', () => {
     AuthWindow = new BrowserWindow({});
     AuthWindow.loadURL(url.format({

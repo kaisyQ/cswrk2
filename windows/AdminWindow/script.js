@@ -12,12 +12,41 @@ const BIRTHDATE_POS = 5;
 ipcRenderer.on('update-AdminWindow', (e, data) => {
     const allUlLi = document.querySelectorAll('ul li');
     for(let i = 0; i < allUlLi.length; ++i) {
-        if(allUlLi[i].id === 'fist li') {
+        if(allUlLi[i].id === 'first li') {
             continue;
         } else {
             allUlLi[i].parentNode.removeChild(allUlLi[i]);
         }
     }
+
+    const headerLi = document.createElement('li');
+    document.querySelector('ul').appendChild(headerLi);
+    let fistLiDiv = document.createElement('div');
+    fistLiDiv.innerText = 'Name';
+    fistLiDiv.className = 'first-li-div';
+    headerLi.appendChild(fistLiDiv);
+
+    let fistLiDiv2 = document.createElement('div');
+    fistLiDiv2.innerText = 'LastName';
+    headerLi.appendChild(fistLiDiv2);
+
+    let fistLiDiv3 = document.createElement('div');
+    fistLiDiv3.innerText = 'Age';
+    headerLi.appendChild(fistLiDiv3);
+
+    let fistLiDiv4 = document.createElement('div');
+    fistLiDiv4.innerText = 'User Role';
+    headerLi.appendChild(fistLiDiv4);
+
+    let fistLiDiv5 = document.createElement('div');
+    fistLiDiv5.innerText = 'Email Address';
+    headerLi.appendChild(fistLiDiv5);
+
+    let fistLiDiv6 = document.createElement('div');
+    fistLiDiv6.innerText = 'Office';
+    fistLiDiv6.className = 'last-li-div';
+    headerLi.appendChild(fistLiDiv6);
+
     for(let i = 0; i < data.arrayOfAllUsers.length; ++i) {
         if (data.arrayOfAllUsers[i][EMAIL_POS] === data.currentUser.email) {
             continue;

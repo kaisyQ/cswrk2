@@ -1,14 +1,19 @@
 const postgres = require('pg');
 
-const updateUser = async (user) => {
-    const client = postgres.Client(require('./config'));
+const updateUser = async (email) => {
+    const client = new postgres.Client(require('./config'));
     try {
         await client.connect();
     } catch (err) {
         console.error(err);
     }
 
-    const updatingUser = await client.query(``);
+    await client.query(`update users
+                        set role_id = 1
+                        where email = '${email}';`);
+
+    await client.end();
+    return true;
 }
 
 module.exports = updateUser;
