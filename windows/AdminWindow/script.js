@@ -8,6 +8,22 @@ const FIRSTNAME_POS = 3;
 const LASTNAME_POS = 4;
 const BIRTHDATE_POS = 5;
 
+let afterLoadPage = false;
+let arrayOfUsers;
+let currentUser;
+
+const updateDataInterval = setInterval(() => {
+    if(afterLoadPage) {
+        ipcRenderer.send('take-data-from-database-event', {isTakenData:false});
+    }
+}, 1000)
+
+ipcRenderer.on('admin-window-data-from-db', (e, data) => {
+    let isNewData = arrayOfUsers.compareArrays(data.arrayOfAllUsers);
+    if(isNewData) {
+        ipcRenderer.send('interval-update', {isUpdated:false});
+    }
+})
 
 ipcRenderer.on('update-AdminWindow', (e, data) => {
     const allUlLi = document.querySelectorAll('ul li');
@@ -93,6 +109,9 @@ ipcRenderer.on('update-AdminWindow', (e, data) => {
 });
 
 ipcRenderer.on('send-all-users-info-event', (e, data) => {
+    afterLoadPage = true;
+    arrayOfUsers = data.arrayOfAllUsers;
+    currentUser = data.currentUser;
     for(let i = 0; i < data.arrayOfAllUsers.length; ++i) {
         if (data.arrayOfAllUsers[i][EMAIL_POS] === data.currentUser.email) {
             continue;

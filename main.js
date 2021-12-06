@@ -121,6 +121,14 @@ ipcMain.on ('creating-new-user-event', async (e, user) => {
 
 });
 
+ipcMain.on('take-data-from-database-event', async (data) => {
+    AdminWindow.webContents.send('admin-window-data-from-db', {currentUser: CurrentUser, arrayOfAllUsers: await GetAllUsersInfo()});
+});
+
+ipcMain.on('interval-update', async () => {
+    AdminWindow.webContents.send('update-AdminWindow', {isUpdated: false, currentUser: CurrentUser, arrayOfAllUsers: await GetAllUsersInfo()});
+})
+
 ipcMain.on('close-AddUserWindow-after-userCreated', async (data) => {
     AddUserWindow.close();
     AddUserWindow = null;
