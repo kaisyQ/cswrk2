@@ -19,6 +19,8 @@ let AdminWindow;
 let AddUserWindow;
 let ChangeRoleWindow;
 
+let CurrentUser;
+
 const DefaultUserMenuTemplate = [
     {
         label: 'Exit', 
@@ -59,12 +61,11 @@ const AdminMenuTemplate = [
 
 ipcMain.on('login-user-event', async (e, user) => {
     
-    const usercheck = await UserCheck({username: user.username, password: user.password});
-
+    const usercheck = await UserCheck({email: user.email, password: user.password});
     if (usercheck) {
-        const userinfo = await TakeUserInfo(user.username);
-        
-        if (await require('./Auth/getUserRole')(user.username) === require('./Auth/roles').Admin) {
+        const userinfo = await TakeUserInfo(user.email);
+        CurrentUser = userinfo;
+        if (await require('./Auth/getUserRole')(user.email) === require('./Auth/roles').Admin) {
             if (!AdminWindow) {
                 AdminWindow = new BrowserWindow({});
                 const adminMenu = Menu.buildFromTemplate(AdminMenuTemplate);
@@ -105,14 +106,25 @@ ipcMain.on('login-user-event', async (e, user) => {
 });
 
 ipcMain.on ('creating-new-user-event', async (e, user) => {
-    const con = UserCheck(user.email);
-
+    const con = await UserCheck(user);
     if(con) {
-        //.. Сказать что юзер уже существует 
+        AddUserWindow.webContents.send('user-already-created', {isCreated: true});
     } else {
-        AddUser(user)
+        try {
+            await AddUser(user);
+            console.log(`User : \n ${user} \n was successfully created`);
+            AddUserWindow.webContents.send('user-successfully-created', {isCreated: true, user: user});
+        } catch (err) {
+            console.error(err);
+        }
     }
 
+});
+
+ipcMain.on('close-AddUserWindow-after-userCreated', async (data) => {
+    AddUserWindow.close();
+    AddUserWindow = null;
+    AdminWindow.webContents.send('update-AdminWindow', {isUpdated: false, currentUser: CurrentUser, arrayOfAllUsers: await GetAllUsersInfo()});
 });
 
 ipcMain.on('admin-changerole-event', (e, data) => {
