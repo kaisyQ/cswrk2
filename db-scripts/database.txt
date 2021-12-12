@@ -6,7 +6,7 @@ create table if not exists Countries (
 create table if not exists Offices(
 	id serial unique,
 	country_id int not null, 
-	title text not null, 
+	office_title text not null, 
 	phone text not null, 
 	contact text not null,
 	foreign key (country_id) references Countries(id)
@@ -14,7 +14,7 @@ create table if not exists Offices(
 
 create table if not exists Roles(
 	id serial unique,
-	title text not null
+	role_title text not null
 );
 
 create table if not exists users(
