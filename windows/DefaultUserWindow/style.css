@@ -16,3 +16,27 @@
     margin-right: 30px;
     font-size: 20px;
 }
+
+ul {
+    width: 800px;
+    list-style: none; 
+}
+
+ul li div {
+    overflow: hidden;
+    width: 16%;
+    float: left;
+    font-size: 18px;
+    border-left: black 1px solid;
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
+}
+
+.last-li-div {
+    width: 13%;
+    border-right: black 1px solid;
+}
+
+.first-li-div {
+    margin-left: 2%;
+}

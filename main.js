@@ -6,6 +6,7 @@ const UserCheck = require('./Auth/auth');
 const TakeUserInfo = require('./Auth/takeUserInfo');
 const GetAllUsersInfo = require('./Auth/GetAllUsers');
 const AddUser = require('./Auth/addUser');
+const UserTime = require('./Auth/enterTime');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -18,13 +19,16 @@ let DefaultUserWindow;
 let AdminWindow;
 let AddUserWindow;
 let ChangeRoleWindow;
-
+let NoLogoutWindow;
+ 
 let CurrentUser;
 
 const DefaultUserMenuTemplate = [
     {
         label: 'Exit', 
-        click () {
+        async click () {
+            const UserTimeInfo = await UserTime.GetUserTimeInfo({id: CurrentUser.id});
+            await UserTime.AddExitTime(UserTimeInfo[UserTimeInfo.length - 1].id);
             app.quit();
         } 
     }
@@ -65,6 +69,7 @@ ipcMain.on('login-user-event', async (e, user) => {
     if (usercheck) {
         const userinfo = await TakeUserInfo(user.email);
         CurrentUser = userinfo;
+        
         if (await require('./Auth/getUserRole')(user.email) === require('./Auth/roles').Admin) {
             if (!AdminWindow) {
                 AdminWindow = new BrowserWindow({});
@@ -85,25 +90,43 @@ ipcMain.on('login-user-event', async (e, user) => {
                 }); 
             }
         } else {
-            if (!DefaultUserWindow) {
-                DefaultUserWindow = new BrowserWindow({});
-                const defaulUserMenu = Menu.buildFromTemplate(DefaultUserMenuTemplate);
-                DefaultUserWindow.setMenu(defaulUserMenu);
+            const lastUserExitInfo = await UserTime.GetUserTimeInfo({id: userinfo.id});
+
+            if (lastUserExitInfo[lastUserExitInfo.length - 1].exit_time) {
+                if (!DefaultUserWindow) {
+                    await UserTime.AddEnterTime({id: userinfo.id});
+                    DefaultUserWindow = new BrowserWindow({});
+                    const defaulUserMenu = Menu.buildFromTemplate(DefaultUserMenuTemplate);
+                    DefaultUserWindow.setMenu(defaulUserMenu);
+                    AuthWindow.close();
+                    DefaultUserWindow.loadURL(url.format({
+                            pathname: path.join(__dirname, 'windows/DefaultUserWindow/index.html'),
+                            protocol: 'file:',
+                            slashes: true
+                    }));
+                    DefaultUserWindow.webContents.on('did-finish-load', async () => {
+                        DefaultUserWindow.webContents.send('user-information-event', {userinfo: userinfo, timeinfo: await UserTime.GetUserTimeInfo({id: userinfo.id})});
+                    });
+                }
+            } else {
+                NoLogoutWindow = new BrowserWindow({});
                 AuthWindow.close();
-                DefaultUserWindow.loadURL(url.format({
-                        pathname: path.join(__dirname, 'windows/DefaultUserWindow/index.html'),
+                NoLogoutWindow.loadURL(url.format({
+                        pathname: path.join(__dirname, 'windows/NoLogoutWindow/index.html'),
                         protocol: 'file:',
                         slashes: true
                 }));
-                DefaultUserWindow.webContents.on('did-finish-load', () => {
-                    DefaultUserWindow.webContents.send('user-information-event', userinfo);
+                NoLogoutWindow.webContents.on('did-finish-load', () => {
+                    NoLogoutWindow.webContents.send('last-uncsc-logout', {lastLog: lastUserExitInfo[lastUserExitInfo.length - 1]});
                 });
             }
+
         }
     } else {
         AuthWindow.webContents.send('not-correct-user', user);
     }
 });
+
 
 ipcMain.on ('creating-new-user-event', async (e, user) => {
     const con = await UserCheck(user);
@@ -172,6 +195,27 @@ ipcMain.on('user-update-event', async (e, data) => {
 
     } else {
         ChangeRoleWindow.webContents.send('user-not-found');
+    }
+});
+
+ipcMain.on('logout-reason', async (e, data) => {
+    const lastUserExitInfo = await UserTime.GetUserTimeInfo({id: CurrentUser.id});
+    await UserTime.updateLogReason({id: lastUserExitInfo[lastUserExitInfo.length - 1].id, logReason: data.logReason});
+    if (!DefaultUserWindow) {
+        await UserTime.AddEnterTime({id: CurrentUser.id});
+        DefaultUserWindow = new BrowserWindow({});
+        const defaulUserMenu = Menu.buildFromTemplate(DefaultUserMenuTemplate);
+        DefaultUserWindow.setMenu(defaulUserMenu);
+        DefaultUserWindow.loadURL(url.format({
+                pathname: path.join(__dirname, 'windows/DefaultUserWindow/index.html'),
+                protocol: 'file:',
+                slashes: true
+        }));
+        DefaultUserWindow.webContents.on('did-finish-load', async () => {
+            DefaultUserWindow.webContents.send('user-information-event', {userinfo: CurrentUser, timeinfo: await UserTime.GetUserTimeInfo({id: CurrentUser.id})});
+        });
+        NoLogoutWindow.close();
+        NoLogoutWindow = null;
     }
 });
 
