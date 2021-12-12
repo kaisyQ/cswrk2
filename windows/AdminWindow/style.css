@@ -1,6 +1,6 @@
 ul {
     width: 800px;
-    list-style: none; 
+    list-style: none;
 }
 
 ul li div {
@@ -23,6 +23,11 @@ ul li div {
 }
 
 #changerole-button {
+    margin-top: 6%;
+    margin-left: 10%;
+}
+
+#ban-button {
     margin-top: 6%;
     margin-left: 10%;
 }

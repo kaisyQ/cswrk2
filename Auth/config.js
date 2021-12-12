@@ -1,9 +1,9 @@
 const config = {
     host: 'localhost',
     user: 'postgres',
-    password: '99145673',
+    password: '2002',
     database: 'coursework',
-    port: 8000,
+    port: 5432,
 }
 
 module.exports = config;
