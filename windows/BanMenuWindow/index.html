@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Ban menu</title>
+</head>
+
+<body>
+    <form>
+        <div>
+            <label>Email address</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>First name</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>Last name</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>Office</label>
+            <input type="text">
+        </div>
+    </form>
+    <div class="footer">
+        <button id="footer-ban-button">Ban</button>
+        <button id="footer-unban-button">Unban</button>
+        <button id="footer-cancel-button">Cancel</button>
+    </div>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4 id="modal-text-header"></h4>
+            <p id="modal-text-content"></p>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">Ok!</a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>

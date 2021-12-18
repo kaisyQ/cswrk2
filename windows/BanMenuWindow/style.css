@@ -1,0 +1,12 @@
+form div label {
+    font-size: 20px;
+}
+
+#admin_radio {
+    margin-left: 10%;
+}
+
+.footer button {
+    margin-top: 6%;
+    margin-left: 10%;
+}
